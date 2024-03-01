@@ -1,11 +1,14 @@
 package ru.kata.spring.boot_security.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.models.Person;
 import ru.kata.spring.boot_security.services.AdminService;
+import ru.kata.spring.boot_security.services.RoleService;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -14,9 +17,17 @@ import java.util.List;
 public class PostmanAdmin {
 
     private final AdminService adminService;
+    private final RoleService roleService;
 
-    public PostmanAdmin(AdminService adminService) {
+    @Autowired
+    public PostmanAdmin(AdminService adminService, RoleService roleService) {
         this.adminService = adminService;
+        this.roleService = roleService;
+    }
+
+    @GetMapping("/pass")
+    public ResponseEntity<Person> getCurrentUser(Principal principal) {
+        return new ResponseEntity<>(adminService.findUserByFirstName(principal.getName()), HttpStatus.OK);
     }
 
 
@@ -37,22 +48,22 @@ public class PostmanAdmin {
     @PostMapping("/users")
     public ResponseEntity<HttpStatus> addPerson(@RequestBody Person person) {
         System.out.println(person);
+        adminService.create(person);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
 
     @PutMapping("/users/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody Person updatedPerson) {
-        // Ваш код для обновления пользователя с заданным id
-        System.out.println(updatedPerson);
+        adminService.updateUser(updatedPerson);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id, @RequestBody Person updatedPerson) {
-        // Ваш код для обновления пользователя с заданным id
-        System.out.println(updatedPerson);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<String> delete(@PathVariable Long id, @RequestBody Person deletedPerson) {
+        System.out.println(deletedPerson);
+        adminService.removeUser(id);
+        return new ResponseEntity<>("User with id "  + id + " was deleted", HttpStatus.OK);
     }
 
 }

@@ -34,8 +34,6 @@ public class AdminController {
 
 
 
-
-
     @GetMapping()
     public String showAllUsers(Model model, Principal principal) {
         Person person = adminService.findByEmail(principal.getName());

@@ -101,6 +101,12 @@ public class AdminServiceImpl implements AdminService {
         return user.get();
     }
 
+    public void create(Person person) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        peopleRepository.save(person);
+    }
+
+    // v1 html
     public void create(Person person, List<String> roles) {
         Set<Role> roleSet = roles.stream()
                 .map(Long::valueOf)
@@ -112,6 +118,13 @@ public class AdminServiceImpl implements AdminService {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         peopleRepository.save(person);
     }
+
+
+    public void updateUser(Person person) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        peopleRepository.save(person);
+    }
+
 
     /**
      * Обновляет информацию о пользователе и его ролях.

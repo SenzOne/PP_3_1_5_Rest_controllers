@@ -37,4 +37,8 @@ public class PeopleService {
         return peopleRepository.findByFirstNameWithRoles(username);
     }
 
+    public Optional<Person> findUserByEmail(String email) {
+        return peopleRepository.findByEmailWithRoles(email);
+    }
+
 }

@@ -34,6 +34,8 @@ public interface AdminService {
 
     void updateUser(Person person, List<String> roles);
 
+    void updateUser(Person person);
+
     void removeUser(Long id);
 
     Person findOneById(Long id);
@@ -41,6 +43,8 @@ public interface AdminService {
     Person findByEmail(String email);
 
     void create(Person person, List<String> roles);
+
+    void create(Person person);
 
     Optional<Person> doesPersonExist(String emil);
 }
