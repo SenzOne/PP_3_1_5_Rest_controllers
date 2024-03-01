@@ -7,7 +7,7 @@ function getCurrentUser() {
         .then((res) => res.json())
         .then((person) => {
 
-            let rolesStringUser = rolesToStringForUser(person.role);
+            let rolesStringUser = rolesToStringForUser(person.roles);
             let dataOfUser = '';
 
             dataOfUser += `<tr>
@@ -28,9 +28,18 @@ function getCurrentUser() {
 getCurrentUser()
 
 function rolesToStringForUser(roles) {
+    if (!Array.isArray(roles)) {
+        console.error('roles is not an array:', roles);
+        return 'Invalid roles data';
+    }
+
     let rolesString = '';
     for (let element of roles) {
-        rolesString += (element.name.toString().replace('ROLE_', '') + ', ');
+        if (!element.nameOfRole) {
+            console.error('nameOfRole is missing in roles element:', element);
+            continue;
+        }
+        rolesString += (element.nameOfRole.toString().replace('ROLE_', '') + ', ');
     }
     rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;

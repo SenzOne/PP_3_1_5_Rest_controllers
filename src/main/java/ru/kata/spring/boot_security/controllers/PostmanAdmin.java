@@ -30,12 +30,10 @@ public class PostmanAdmin {
         return new ResponseEntity<>(adminService.findUserByFirstName(principal.getName()), HttpStatus.OK);
     }
 
-
     @GetMapping("/users")
     public List<Person> getAllUsers() {
         return adminService.getAllUsers();
     }
-
 
     @GetMapping("/users/{id}")
     public Person getPerson(@PathVariable("id") Long id) {
@@ -43,15 +41,12 @@ public class PostmanAdmin {
         return adminService.findOneById(id);
     }
 
-
-
     @PostMapping("/users")
     public ResponseEntity<HttpStatus> addPerson(@RequestBody Person person) {
         System.out.println(person);
         adminService.create(person);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
 
     @PutMapping("/users/{id}")
     public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody Person updatedPerson) {
@@ -63,7 +58,6 @@ public class PostmanAdmin {
     public ResponseEntity<String> delete(@PathVariable Long id, @RequestBody Person deletedPerson) {
         System.out.println(deletedPerson);
         adminService.removeUser(id);
-        return new ResponseEntity<>("User with id "  + id + " was deleted", HttpStatus.OK);
+        return new ResponseEntity<>("User with id " + id + " was deleted", HttpStatus.OK);
     }
-
 }
