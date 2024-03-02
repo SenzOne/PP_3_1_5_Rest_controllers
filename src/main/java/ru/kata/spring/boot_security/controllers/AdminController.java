@@ -49,7 +49,7 @@ public class AdminController {
     @GetMapping("/new")
     public String showNewUserForm(Model model) {
         model.addAttribute("person", new Person());
-        return "/admin/new";
+        return "index";
     }
 
 

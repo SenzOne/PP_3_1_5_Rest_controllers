@@ -3,9 +3,7 @@ package ru.kata.spring.boot_security.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.models.Person;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.services.AdminService;
@@ -30,6 +28,7 @@ public class AdminRestController {
 
     @GetMapping("/showAccount")
     public ResponseEntity<Person> showInfoUser(Principal principal) {
+        System.out.println(principal.getName());
         return new ResponseEntity<>(adminService.findByEmail(principal.getName()), HttpStatus.OK);
     }
 
@@ -38,8 +37,31 @@ public class AdminRestController {
         return new ResponseEntity<>(adminService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("roles")
+    @GetMapping("/roles")
     public ResponseEntity<Collection<Role>> getAllRoles(){
         return  new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+    }
+
+    @GetMapping("/roles/{id}")
+    public ResponseEntity<Collection<Role>> getRole(@PathVariable("id") Long id){
+        return  new ResponseEntity<>(adminService.findOneById(id).getRoles(), HttpStatus.OK);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<Person> addNewUser(@RequestBody Person newUser) {
+        adminService.create(newUser); // TODO: может сразу шифровать пароль
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> update(@RequestBody Person updatedPerson) {
+        adminService.updateUser(updatedPerson);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id}") // TODO сделать удаление по person
+    public ResponseEntity<String> delete(@PathVariable Long id, @RequestBody Person deletedPerson) {
+        adminService.removeUser(id);
+        return new ResponseEntity<>("User with id " + id + " was deleted", HttpStatus.OK);
     }
 }

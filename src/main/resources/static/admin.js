@@ -7,7 +7,7 @@ function getCurrentAdmin() {
         .then((res) => res.json())
         .then((userAdmin) => {
 
-            let rolesStringAdmin = rolesToStringForAdmin(userAdmin.role);
+            let rolesStringAdmin = rolesToStringForAdmin(userAdmin.roles);
             let data = '';
 
             data += `<tr>
@@ -31,7 +31,7 @@ function rolesToStringForAdmin(roles) {
     let rolesString = '';
 
     for (const element of roles) {
-        rolesString += (element.name.toString().replace('ROLE_', '') + ', ');
+        rolesString += (element.nameOfRole.toString());
     }
     rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;
@@ -52,4 +52,3 @@ async function open_fill_modal(form, modal, id) {
     form.password.value = person.password;
     form.role.value = person.role;
 }
-
