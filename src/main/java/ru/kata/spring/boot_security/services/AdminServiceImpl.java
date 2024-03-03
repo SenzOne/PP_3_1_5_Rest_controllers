@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.repositories.PeopleRepository;
 import ru.kata.spring.boot_security.repositories.RoleRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -120,33 +121,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
-    public void updateUser(Person person) {
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        peopleRepository.save(person);
-    }
+    public void updateUser(Person updatedPerson) {
 
+        Person existingPerson = peopleRepository.findById(updatedPerson.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Person not found with id: " + updatedPerson.getId()));
 
-    /**
-     * Обновляет информацию о пользователе и его ролях.
-     *
-     * @param person Обновленный объект Person.
-     * @param roles  Список строковых идентификаторов ролей.
-     */
-    @Override
-    public void updateUser(Person person, List<String> roles) {
-        Person beforeUpdate = peopleRepository.getById(person.getId());
-
-        if (person.getPassword().isEmpty()){
-            person.setPassword(passwordEncoder.encode(beforeUpdate.getPassword()));
-        }
-        Set<Role> roleSet = roles.stream()
-                .map(Long::valueOf)
-                .map(roleRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
-        person.setRoles(roleSet);
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        peopleRepository.save(person);
+        existingPerson.setAge(updatedPerson.getAge());
+        existingPerson.setEmail(updatedPerson.getEmail());
+        existingPerson.setFirstName(updatedPerson.getFirstName());
+        existingPerson.setLastName(updatedPerson.getLastName());
+        existingPerson.setLastName(updatedPerson.getLastName());
+        existingPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
+        peopleRepository.save(existingPerson);
     }
 }
