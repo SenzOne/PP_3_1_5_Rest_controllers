@@ -51,7 +51,7 @@ function loadRolesForEdit() {
             data.forEach(role => {
                 let option = document.createElement("option");
                 option.value = role.id;
-                option.text = role.toString().replace('ROLE_', '');
+                option.text = role.nameOfRole.replace('ROLE_', '');
                 selectEdit.appendChild(option);
             });
         })
