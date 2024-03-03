@@ -107,20 +107,6 @@ public class AdminServiceImpl implements AdminService {
         peopleRepository.save(person);
     }
 
-    // v1 html
-    public void create(Person person, List<String> roles) {
-        Set<Role> roleSet = roles.stream()
-                .map(Long::valueOf)
-                .map(roleRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
-        person.setRoles(roleSet);
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        peopleRepository.save(person);
-    }
-
-
     public void updateUser(Person updatedPerson) {
 
         Person existingPerson = peopleRepository.findById(updatedPerson.getId())

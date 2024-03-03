@@ -26,23 +26,6 @@ function deleteUser() {
         }
     });
 }
-//
-// async function open_fill_modal(form, modal, id) {
-//     try {
-//         const response = await fetch("http://localhost:8080/api/admin/users/" + id);
-//         const user = await response.json();
-//
-//         form.querySelector("#delete-id").value = user.id;
-//         form.querySelector("#delete-name").value = user.firstName;
-//         form.querySelector("#delete-lastname").value = user.lastName;
-//         form.querySelector("#delete-age").value = user.age;
-//         form.querySelector("#delete-username").value = user.username;
-//         form.querySelector("#delete-roles").value = user.roles.map(role => role.nameOfRole).join(',');
-//
-//         modal.show();
-//     } catch (error) {
-//     }
-// }
 
 function loadRolesForDelete() {
     let selectDelete = document.getElementById("delete-roles");

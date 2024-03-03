@@ -6,9 +6,11 @@ const URLEdit = "http://localhost:8080/api/admin/users/";
 async function editModal(id) {
     const modalEdit = new bootstrap.Modal(document.querySelector('#editModal'));
     await open_fill_modal(formEdit, modalEdit, id);
-    loadRolesForEdit();
+    await loadRolesForEdit();
 }
+
 function editUser() {
+
     formEdit.addEventListener("submit", ev => {
         ev.preventDefault();
 
@@ -26,13 +28,13 @@ function editUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                    id: formEdit.id.value,
-                    firstName: formEdit.firstName.value,
-                    lastname: formEdit.lastname.value,
-                    age: formEdit.age.value,
-                    email: formEdit.email.value,
-                    password: formEdit.password.value,
-                    roles: rolesForEdit
+                id: formEdit.id.value,
+                firstName: formEdit.firstName.value,
+                lastName: formEdit.lastName.value,
+                age: formEdit.age.value,
+                email: formEdit.email.value,
+                password: formEdit.password.value,
+                roles: rolesForEdit
             })
         }).then(() => {
             $('#editClose').click();
@@ -57,5 +59,6 @@ function loadRolesForEdit() {
         })
 
 }
+
 window.addEventListener("load", loadRolesForEdit);
 

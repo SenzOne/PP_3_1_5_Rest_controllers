@@ -44,27 +44,38 @@ async function getUserById(id) {
 }
 
 async function open_fill_modal(form, modal, id) {
-    modal.show();
-    let person = await getUserById(id);
+    // Добавим вывод в консоль для отслеживания
+    // console.log("Fetching user data for ID:", id);
 
-    if (!person) {
-        console.error("User information is undefined or not retrieved properly.");
-        return;
-    }
+    const url = `http://localhost:8080/api/admin/users/${id}`;
 
-    form.id.value = person.id;
-    form.firstName.value = person.firstName;
-    form.lastName.value = person.lastName;
-    form.age.value = person.age;
-    form.email.value = person.email;
-    form.password.value = person.password;
+    try {
+        const response = await fetch(url);
+        const userData = await response.json();
 
-    let rolesSelect = form.roles;
-    rolesSelect.innerHTML = "";
+        // Добавим вывод в консоль для отслеживания
+        // console.log("Fetched user data:", userData);
 
-    for (const role of person.roles) {
-        let option = document.createElement("option");
-        option.text = role.nameOfRole.replace('ROLE_', '') + ' ';
-        rolesSelect.add(option);
+        // Заполнение формы данными пользователя
+        form.id.value = userData.id;
+        form.firstName.value = userData.firstName;
+        form.lastName.value = userData.lastName;
+        form.age.value = userData.age;
+        form.email.value = userData.email;
+        form.password.value = userData.password;
+
+        // Отметка ролей в форме
+        userData.roles.forEach(role => {
+            const roleOption = form.roles.querySelector(`option[value="${role.id}"]`);
+            if (roleOption) {
+                roleOption.selected = true;
+            }
+        });
+
+        // Открываем модальное окно
+        modal.show();
+    } catch (error) {
+        console.error("Error fetching user data:", error);
     }
 }
+
