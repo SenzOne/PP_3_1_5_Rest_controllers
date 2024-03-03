@@ -21,8 +21,8 @@ function createNewUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: formNewUser.username.value,
-                lastname: formNewUser.lastname.value,
+                firstName: formNewUser.firstName.value,
+                lastName: formNewUser.lastName.value,
                 age: formNewUser.age.value,
                 email: formNewUser.email.value,
                 password: formNewUser.password.value,
@@ -31,7 +31,7 @@ function createNewUser() {
         }).then(() => {
             formNewUser.reset();
             getAllUsers();
-            $('#usersTable').click(); //клик по кнопке Users Table
+            $('#usersTable').click();
 
         });
     });
@@ -48,7 +48,7 @@ function loadRolesForNewUser() {
             data.forEach(role => {
                 let option = document.createElement("option");
                 option.value = role.id;
-                option.text = role.toString()
+                option.text = role.nameOfRole.replace('ROLE_', '')
                 selectAdd.appendChild(option);
             });
         })

@@ -13,16 +13,16 @@ function getAllUsers() {
 
             const tableUsers = document.getElementById('tableUsers');
 
-            for (let user of users) {
+            for (let person of users) {
 
-                rolesString = rolesToString(user.roles);
+                rolesString = rolesToString(person.roles);
 
                 dataOfUsers += `<tr>
-                        <td>${user.id}</td>
-                        <td>${user.username}</td>
-                        <td>${user.lastname}</td>
-                        <td>${user.age}</td>
-                        <td>${user.email}</td>
+                        <td>${person.id}</td>
+                        <td>${person.firstName}</td>
+                        <td>${person.lastName}</td>
+                        <td>${person.age}</td>
+                        <td>${person.email}</td>
                         <td>${rolesString}</td>
 
 
@@ -31,7 +31,7 @@ function getAllUsers() {
                           class="btn btn-info"
                           data-bs-toogle="modal"
                           data-bs-target="#editModal"
-                          onclick="editModal(${user.id})">
+                          onclick="editModal(${person.id})">
                                 Edit
                             </button>
                         </td>
@@ -42,7 +42,7 @@ function getAllUsers() {
                             class="btn btn-danger" 
                             data-toggle="modal" 
                             data-target="#deleteModal" 
-                            onclick="deleteModal(${user.id})">
+                            onclick="deleteModal(${person.id})">
                                 Delete
                             </button>
                         </td>
@@ -55,8 +55,7 @@ function getAllUsers() {
 function rolesToString(roles) {
     let rolesString = '';
     for (const element of roles) {
-        rolesString += (element.nameOfRole.toString());
+        rolesString += (element.nameOfRole.replace('ROLE_', '') + ' ');
     }
-    rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;
 }

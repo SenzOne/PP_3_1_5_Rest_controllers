@@ -31,11 +31,13 @@ function rolesToStringForAdmin(roles) {
     let rolesString = '';
 
     for (const element of roles) {
-        rolesString += (element.nameOfRole.toString());
+        rolesString += (element.nameOfRole.replace('ROLE_', '') + ' ');
     }
-    rolesString = rolesString.substring(0, rolesString.length - 2);
+    // rolesString = rolesString.substring(0, rolesString.length - 2);
     return rolesString;
 }
+
+
 async function getUserById(id) {
     let response = await fetch("http://localhost:8080/api/admin/users/" + id);
     return await response.json();
@@ -44,11 +46,25 @@ async function getUserById(id) {
 async function open_fill_modal(form, modal, id) {
     modal.show();
     let person = await getUserById(id);
+
+    if (!person) {
+        console.error("User information is undefined or not retrieved properly.");
+        return;
+    }
+
     form.id.value = person.id;
-    form.username.value = person.firstName;
+    form.firstName.value = person.firstName;
     form.lastName.value = person.lastName;
     form.age.value = person.age;
     form.email.value = person.email;
     form.password.value = person.password;
-    form.role.value = person.role;
+
+    let rolesSelect = form.roles;
+    rolesSelect.innerHTML = "";
+
+    for (const role of person.roles) {
+        let option = document.createElement("option");
+        option.text = role.nameOfRole.replace('ROLE_', '') + ' ';
+        rolesSelect.add(option);
+    }
 }
