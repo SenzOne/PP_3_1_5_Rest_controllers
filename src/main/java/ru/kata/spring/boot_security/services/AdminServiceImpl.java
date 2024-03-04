@@ -118,6 +118,7 @@ public class AdminServiceImpl implements AdminService {
         existingPerson.setLastName(updatedPerson.getLastName());
         existingPerson.setLastName(updatedPerson.getLastName());
         existingPerson.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
+        existingPerson.setRoles(updatedPerson.getRoles());
         peopleRepository.save(existingPerson);
     }
 }

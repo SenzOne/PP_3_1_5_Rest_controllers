@@ -23,21 +23,22 @@ function editUser() {
         for (let i = 0; i < formEdit.roles.options.length; i++) {
             if (formEdit.roles.options[i].selected) rolesForEdit.push({
                 id: formEdit.roles.options[i].value,
-                role: "ROLE_" + formEdit.roles.options[i].text
+                nameOfRole: "ROLE_" + formEdit.roles.options[i].text,
+                authority: "ROLE_" + formEdit.roles.options[i].text
             });
         }
 
-        let requestBody = {
-            id: formEdit.id.value,
-            firstName: formEdit.firstName.value,
-            lastName: formEdit.lastName.value,
-            age: formEdit.age.value,
-            email: formEdit.email.value,
-            password: formEdit.password.value,
-            roles: rolesForEdit
-        };
-
-        console.log("Submitting edit form with data:", requestBody);
+        // let requestBody = {
+        //     id: formEdit.id.value,
+        //     firstName: formEdit.firstName.value,
+        //     lastName: formEdit.lastName.value,
+        //     age: formEdit.age.value,
+        //     email: formEdit.email.value,
+        //     password: formEdit.password.value,
+        //     roles: rolesForEdit
+        // };
+        //
+        // console.log("Submitting edit form with data:", requestBody);
 
         fetch(URLEdit + formEdit.id.value, {
             method: 'PATCH',

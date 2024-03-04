@@ -44,13 +44,13 @@ public class AdminRestController {
     }
 
     @GetMapping("/roles")
-    public ResponseEntity<Collection<Role>> getAllRoles(){
-        return  new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
+    public ResponseEntity<Collection<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/roles/{id}")
-    public ResponseEntity<Collection<Role>> getRole(@PathVariable("id") Long id){
-        return  new ResponseEntity<>(adminService.findOneById(id).getRoles(), HttpStatus.OK);
+    public ResponseEntity<Collection<Role>> getRole(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(adminService.findOneById(id).getRoles(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
@@ -65,7 +65,7 @@ public class AdminRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}") // TODO сделать удаление по person
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         adminService.removeUser(id);
         return new ResponseEntity<>("User with id " + id + " was deleted", HttpStatus.OK);

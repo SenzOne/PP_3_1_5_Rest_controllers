@@ -45,7 +45,7 @@ async function getUserById(id) {
 
 async function open_fill_modal(form, modal, id) {
     // Добавим вывод в консоль для отслеживания
-    console.log("Fetching user data for ID:", id);
+    // console.log("Fetching user data for ID:", id);
 
     const url = `http://localhost:8080/api/admin/users/${id}`;
 
