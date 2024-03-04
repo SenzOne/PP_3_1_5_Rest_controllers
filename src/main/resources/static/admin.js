@@ -45,7 +45,7 @@ async function getUserById(id) {
 
 async function open_fill_modal(form, modal, id) {
     // Добавим вывод в консоль для отслеживания
-    // console.log("Fetching user data for ID:", id);
+    console.log("Fetching user data for ID:", id);
 
     const url = `http://localhost:8080/api/admin/users/${id}`;
 
@@ -54,7 +54,8 @@ async function open_fill_modal(form, modal, id) {
         const userData = await response.json();
 
         // Добавим вывод в консоль для отслеживания
-        // console.log("Fetched user data:", userData);
+        console.log("Fetched user data:", userData, form);
+
 
         // Заполнение формы данными пользователя
         form.id.value = userData.id;
@@ -62,7 +63,7 @@ async function open_fill_modal(form, modal, id) {
         form.lastName.value = userData.lastName;
         form.age.value = userData.age;
         form.email.value = userData.email;
-        form.password.value = userData.password;
+        if (form.password) form.password.value = userData.password;
 
         // Отметка ролей в форме
         userData.roles.forEach(role => {
