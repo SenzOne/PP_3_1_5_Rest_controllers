@@ -44,5 +44,10 @@ public class PersonValidator implements Validator {
         if (person.getLastName() == null || person.getLastName().trim().isEmpty()) {
             errors.rejectValue("lastName", "NotEmpty", "LastName should not be empty");
         }
+
+        if (person.getRoles() == null || person.getRoles().isEmpty()) {
+            errors.rejectValue("roles", "NotEmpty", "The role should not be empty");
+        }
+
     }
 }

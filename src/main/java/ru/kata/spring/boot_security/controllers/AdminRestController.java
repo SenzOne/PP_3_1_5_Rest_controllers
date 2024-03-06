@@ -72,6 +72,7 @@ public class AdminRestController {
         personValidator.validate(updatedPerson, bindingResult);
 
         if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
 
