@@ -1,14 +1,19 @@
 package ru.kata.spring.boot_security.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.models.Person;
 import ru.kata.spring.boot_security.models.Role;
 import ru.kata.spring.boot_security.services.AdminService;
 import ru.kata.spring.boot_security.services.RoleService;
+import ru.kata.spring.boot_security.validators.PersonValidator;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
@@ -19,10 +24,12 @@ public class AdminRestController {
 
     private final AdminService adminService;
     private final RoleService roleService;
+    private final PersonValidator personValidator;
 
-    public AdminRestController(AdminService adminService, RoleService roleService) {
+    public AdminRestController(AdminService adminService, RoleService roleService, PersonValidator personValidator) {
         this.adminService = adminService;
         this.roleService = roleService;
+        this.personValidator = personValidator;
     }
 
 
@@ -54,15 +61,22 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Person> addNewUser(@RequestBody Person newUser) {
+    public ResponseEntity<Person> addNewUser(@RequestBody @Valid Person newUser) {
         adminService.create(newUser); // TODO: может сразу шифровать пароль
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> update(@RequestBody Person updatedPerson) {
+    public ResponseEntity<?> update(@RequestBody @Valid Person updatedPerson, BindingResult bindingResult) {
+
+        personValidator.validate(updatedPerson, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        }
+
         adminService.updateUser(updatedPerson);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok("User updated successfully");
     }
 
     @DeleteMapping("/users/{id}")

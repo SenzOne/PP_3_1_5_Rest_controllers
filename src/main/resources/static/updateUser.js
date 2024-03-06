@@ -28,18 +28,6 @@ function editUser() {
             });
         }
 
-        // let requestBody = {
-        //     id: formEdit.id.value,
-        //     firstName: formEdit.firstName.value,
-        //     lastName: formEdit.lastName.value,
-        //     age: formEdit.age.value,
-        //     email: formEdit.email.value,
-        //     password: formEdit.password.value,
-        //     roles: rolesForEdit
-        // };
-        //
-        // console.log("Submitting edit form with data:", requestBody);
-
         fetch(URLEdit + formEdit.id.value, {
             method: 'PATCH',
             headers: {
@@ -54,13 +42,31 @@ function editUser() {
                 password: formEdit.password.value,
                 roles: rolesForEdit
             })
-        }).then(() => {
-            $('#editClose').click();
-            getAllUsers();
-        });
+        }).then(response => {
+            if (!response.ok) {
+                return response.json();
+            } else {
+                return { message: "User updated successfully" };
+            }
+        }).then(data => {
+            console.log("Response data:", data);
+
+            if (Array.isArray(data) && data.length > 0 && data[0].defaultMessage) {
+                // Отображение ошибок валидации
+                const validationErrorsElement = document.getElementById("validationErrors");
+                validationErrorsElement.innerHTML = "";
+                data.forEach(error => {
+                    validationErrorsElement.innerHTML += `<p>${error.defaultMessage}</p>`;
+                });
+            } else {
+                const validationErrorsElement = document.getElementById("validationErrors");
+                validationErrorsElement.innerHTML = "";
+                $('#editClose').click();
+                getAllUsers();
+            }
+        })
     });
 }
-
 function loadRolesForEdit() {
     let selectEdit = document.getElementById("edit-roles");
     selectEdit.innerHTML = "";
