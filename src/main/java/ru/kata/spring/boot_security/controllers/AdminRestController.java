@@ -61,8 +61,15 @@ public class AdminRestController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<Person> addNewUser(@RequestBody @Valid Person newUser) {
-        adminService.create(newUser); // TODO: может сразу шифровать пароль
+    public ResponseEntity<?> addNewUser(@RequestBody @Valid Person newUser, BindingResult bindingResult) {
+
+        personValidator.validate(newUser, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        }
+
+        adminService.create(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
@@ -72,7 +79,6 @@ public class AdminRestController {
         personValidator.validate(updatedPerson, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
 

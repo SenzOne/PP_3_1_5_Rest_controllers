@@ -28,12 +28,26 @@ function createNewUser() {
                 password: formNewUser.password.value,
                 roles: rolesForNewUser
             })
-        }).then(() => {
-            formNewUser.reset();
-            getAllUsers();
-            $('#usersTable').click();
-
-        });
+        }).then(response => {
+            if (!response.ok) {
+                return response.json();
+            } else {
+                return { message: "User updated successfully" };
+            }
+        }).then(data => {
+            if (Array.isArray(data) && data.length > 0 && data[0].defaultMessage) {
+                const validationErrorsElement = document.getElementById("validationErrorsNewUser");
+                validationErrorsElement.innerHTML = "";
+                data.forEach(error => {
+                    validationErrorsElement.innerHTML += `<p>${error.defaultMessage}</p>`;
+                });
+            } else {
+                const validationErrorsElement = document.getElementById("validationErrorsNewUser");
+                validationErrorsElement.innerHTML = "";
+                $('#usersTable').click();
+                getAllUsers();
+            }
+        })
     });
 }
 
@@ -52,7 +66,6 @@ function loadRolesForNewUser() {
                 selectAdd.appendChild(option);
             });
         })
-        // .catch(error => console.error(error));
 }
 
 window.addEventListener("load", loadRolesForNewUser);
